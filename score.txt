@@ -1,0 +1,6 @@
+{
+    "Easy": 4,
+    "Medium": 24,
+    "Hard": 67,
+    "Impossible": 45
+}
