@@ -273,14 +273,10 @@ class Window(arcade.Window):
         self.music = random.choice(self.tracklist)
 
         # initialize game sounds
-        arcade.play_sound(self.music, self.MUSIC_VOLUME)
+        self.music.play(0)
         self.death_sound = arcade.Sound("resources/sounds/oof.wav")
-        arcade.play_sound(self.death_sound, 0)
         self.flap = arcade.Sound("resources/sounds/wing_flap.wav")
-        arcade.play_sound(self.flap, 0)
         self.score_sound = arcade.Sound("resources/sounds/add_point.wav")
-        arcade.play_sound(self.score_sound, 0)
-
         # setup variables influenced by difficulty setting
         self.diff = difficulty
         self.difficulty = difficulties[self.diff]
@@ -384,8 +380,8 @@ class Window(arcade.Window):
         # check for collision with pipes, game over if bird collides
         if collision_check and check_collision(int(self.bird.x), pipe.x, 50, "x"):
             self.game_over()
-        if self.music_enabled and self.music.is_complete():
-            self.play_music()
+        # if self.music_enabled and self.music.is_complete():
+        #     self.play_music()
 
         # remove pipe from list and add 1 to score if the bird successfully passes through
         if self.bird.get_edges()["x_min"] > self.bottom_pipes[0].x + 50:
@@ -404,19 +400,20 @@ class Window(arcade.Window):
     # function which handles background music
     def play_music(self):
         if self.music.get_stream_position() != 0:
-            arcade.stop_sound(self.music)
+            self.music.stop()
         if len(self.tracklist) == 0:
             self.tracklist = self.tracks2.copy()
         self.music = random.choice(self.tracklist)
         self.tracklist.remove(self.music)
-        arcade.play_sound(self.music, self.MUSIC_VOLUME)
+        self.music.play(self.MUSIC_VOLUME)
+        # arcade.play_sound(self.music, self.MUSIC_VOLUME)
 
 
 
 
     def play_sound(self, sound):
         if sound.get_stream_position() == 0:
-            arcade.play_sound(sound, self.SFX_VOLUME)
+            sound.play(self.SFX_VOLUME)
 
 
     # handles keypresses
